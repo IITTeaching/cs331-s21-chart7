@@ -22,8 +22,13 @@ def captured_output():
 
 # implement this function
 def is_perfect(n):
-    pass
-
+    sum = 0
+    for i in range(1,n):
+        if(n%i == 0):
+            sum+=i
+    if(sum == n):
+        return True
+    return False
 # (3 points)
 def test1():
     tc = unittest.TestCase()
@@ -40,8 +45,11 @@ def test1():
 
 # implement this function
 def multiples_of_3_and_5(n):
-    pass
-
+    sum = 0
+    for i in range(1,n):
+        if(i%3 == 0 or i%5 == 0):
+            sum+=i
+    return sum
 # (3 points)
 def test2():
     tc = unittest.TestCase()
@@ -53,8 +61,14 @@ def test2():
 # EXERCISE 3
 #################################################################################
 def integer_right_triangles(p):
-    pass
-
+    sum = 0
+    for a in range(1,p):
+        for b in range(1,p-1):
+            c = a**2 + b**2
+            hyp = c**.5
+            if(hyp - int(hyp) == 0 and a+b+int(hyp)==p):
+                sum+=1
+    return int(sum/2)
 def test3():
     tc = unittest.TestCase()
     tc.assertEqual(integer_right_triangles(60), 2)
@@ -67,7 +81,23 @@ def test3():
 
 # implement this function
 def gen_pattern(chars):
-    pass
+    char_list = []  
+    i = 0
+    j = len(chars) - 1  
+    while j > 0: 
+        new_char = chars[j:]  
+        new_char = new_char[::-1]
+        char_list.append(new_char)   
+        j -= 1 
+    while i < (len(chars)):  
+        new_char = chars[i:] 
+        new_char = new_char[::-1]
+        char_list.append(new_char)   
+        i += 1 
+    for seq in char_list:  
+        temp = seq[:len(seq) - 1] 
+        temp = temp[::-1]
+        print('.'.join(seq + temp).center((len(chars)*2-1)*2-1, '.'))
 
 def test4():
     tc = unittest.TestCase()
