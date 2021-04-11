@@ -24,10 +24,32 @@ class Heap:
 
     def heapify(self, idx=0):
         ### BEGIN SOLUTION
+        while True:
+            lefti = self._left(idx)
+            righti = self._right(idx)  
+            mid = idx
+            if lefti < len(self.data) and self.key(self.data[lefti]) > self.key(self.data[mid]):
+                mid = lefti  
+            if righti < len(self.data) and self.key(self.data[righti]) > self.key(self.data[mid]): 
+                mid = righti  
+            if mid != idx: 
+                self.data[mid], self.data[idx] = self.data[idx], self.data[mid] 
+                idx = mid 
+            else: 
+                break
         ### END SOLUTION
 
     def add(self, x):
         ### BEGIN SOLUTION
+        self.data.append(x) 
+        idx = len(self.data) - 1  
+        while idx > 0:  
+            pidx = self._parent(idx)
+            if self.key(self.data[idx]) > self.key(self.data[pidx]): 
+                self.data[idx], self.data[pidx] = self.data[pidx], self.data[idx] 
+                idx = pidx
+            else: 
+                break
         ### END SOLUTION
 
     def peek(self):
@@ -130,6 +152,21 @@ def test_key_heap_5():
 ################################################################################
 def running_medians(iterable):
     ### BEGIN SOLUTION
+    minHeap = Heap()
+    maxHeap = Heap(key=lambda x: -x)
+    medians = [0] * len(iterable)
+    
+    for i, x in enumerate(iterable):
+        minHeap.add(x)
+        maxHeap.add(minHeap.pop())
+        if len(maxHeap) > len(minHeap):
+            minHeap.add(maxHeap.peek())
+            maxHeap.pop() 
+        if len(minHeap) == len(maxHeap):
+            medians[i] = (minHeap.peek() + maxHeap.peek()) / 2
+        else:
+            medians[i] = minHeap.peek()
+    return medians
     ### END SOLUTION
 
 ################################################################################
@@ -174,6 +211,13 @@ def test_median_3():
 ################################################################################
 def topk(items, k, keyf):
     ### BEGIN SOLUTION
+    minHeap = Heap(keyf)  
+    rtn = []
+    for i in range(len(items)): 
+        minHeap.add(items[i]) 
+    for i in range(k):  
+        rtn.append(minHeap.pop())
+    return rtn
     ### END SOLUTION
 
 ################################################################################
